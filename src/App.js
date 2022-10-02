@@ -2,7 +2,6 @@ import './App.css'
 
 import React from "react";
 import axios from "axios";
-import { Container } from 'react-bootstrap';
 import Citycard from './Components/CardComp.js'
 
 class App extends React.Component {
