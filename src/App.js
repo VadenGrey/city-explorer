@@ -1,5 +1,9 @@
+import './App.css'
+
 import React from "react";
 import axios from "axios";
+import { Container } from 'react-bootstrap';
+import Citycard from './Components/CardComp.js'
 
 class App extends React.Component {
   constructor(props) {
@@ -15,7 +19,6 @@ class App extends React.Component {
   handleInput = (e) => {
     e.preventDefault();
     this.setState({ searchQuery: e.target.value });
-    console.log(this.state.searchQuery)
   }
 
   handleSearch = async (e) => {
@@ -29,22 +32,18 @@ class App extends React.Component {
       this.setState({ error: true});
       this.setState({ errorMessage: error.message });
     }
-
   }
   render() {
     return(
       <>
+        <h1>City Explorer</h1>
         <input onChange={this.handleInput} placeholder='search' ></input>
         <button onClick={this.handleSearch}>explore</button>
-        {this.state.location.place_id &&
-        <>
-          <h2>The City is: {this.state.location.display_name}</h2>
-          <h2>The lat is: {this.state.location.lat}</h2>
-          <h2>The lon is: {this.state.location.lon}</h2>
-        </>
-        }
         {this.state.error &&
           <h2>{this.state.errorMessage}</h2>
+        }
+        {this.state.location.place_id &&
+          <Citycard locName={this.state.location.display_name} Text={`Latitude: ${this.state.location.lat} Longitude: ${this.state.location.lon}`} imgSrc={`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATION_IQ_KEY}&center=${this.state.location.lat},${this.state.location.lon}`}/>
         }
       </>
     )

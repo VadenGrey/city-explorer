@@ -1,0 +1,15 @@
+body {
+    text-align: center;
+    color: antiquewhite;
+    background-color:darkslategray;
+}
+
+img {
+    border-radius: 25px;
+}
+
+
+.card {
+    margin-top: 50px;
+    
+}
