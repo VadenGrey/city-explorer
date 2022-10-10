@@ -3,6 +3,7 @@ import './App.css'
 import React from "react";
 import axios from "axios";
 import Citycard from './Components/CardComp.js'
+import Weather from './Components/Weather.js';
 
 class App extends React.Component {
   constructor(props) {
@@ -12,6 +13,8 @@ class App extends React.Component {
       location: {},
       error: false,
       errorMessage: '',
+      weatherData: [],
+      foreCast: [],
     }
   }
 
@@ -24,8 +27,9 @@ class App extends React.Component {
     try {
       const API = `https://us1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_LOCATION_IQ_KEY}&q=${this.state.searchQuery}&format=json`;
       const res = await axios.get(API);
-      console.log(res.data[0]);
       this.setState({ location: res.data[0]})
+      const weth = await axios.get(`http://localhost:3001/weather?${this.state.location.display_name}`)
+      this.setState({ weatherData: weth.data})
     } catch (error) {
       console.log('ERROR');
       this.setState({ error: true});
@@ -44,6 +48,8 @@ class App extends React.Component {
         {this.state.location.place_id &&
           <Citycard locName={this.state.location.display_name} Text={`Latitude: ${this.state.location.lat} Longitude: ${this.state.location.lon}`} imgSrc={`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATION_IQ_KEY}&center=${this.state.location.lat},${this.state.location.lon}`}/>
         }
+        <Weather foreCast={this.state.weatherData}></Weather>
+        
       </>
     )
   }
